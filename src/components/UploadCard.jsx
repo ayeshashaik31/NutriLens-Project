@@ -137,22 +137,35 @@ function UploadCard() {
             </div>
 
             <button
-              type="button"
-              onClick={() => cameraInputRef.current?.click()}
-              className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950"
-            >
-              <Camera className="h-5 w-5" />
-              Take Photo
-            </button>
+            type="button"
+            onClick={() => {
+            setShowImageOptions(false);
 
-            <button
-              type="button"
-              onClick={() => galleryInputRef.current?.click()}
-              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
-            >
-              <Images className="h-5 w-5" />
-              Choose from Gallery
-            </button>
+            setTimeout(() => {
+            cameraInputRef.current?.click();
+           }, 100);
+           }}
+           className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950"
+           >
+           <Camera className="h-5 w-5" />
+           Take Photo
+           </button>
+
+          <button
+          type="button"
+          onClick={() => {
+          setShowImageOptions(false);
+
+         setTimeout(() => {
+         galleryInputRef.current?.click();
+        }, 100);
+        }}
+        className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
+        >
+        <Images className="h-5 w-5" />
+        Choose from Gallery
+       </button>  
+              
 
             <button
               type="button"
