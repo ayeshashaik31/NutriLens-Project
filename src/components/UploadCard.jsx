@@ -7,6 +7,7 @@ function UploadCard() {
   const navigate = useNavigate();
 
   const galleryInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,8 +20,9 @@ function UploadCard() {
     if (selectedImage) {
       setImage(selectedImage);
       setError("");
-      setShowImageOptions(false);
     }
+    // Always close modal immediately upon file selection attempt
+    setShowImageOptions(false);
   };
 
   const handleAnalyze = async () => {
@@ -84,14 +86,6 @@ function UploadCard() {
             {image ? "Change Image" : "Choose Image"}
           </button>
 
-          <input
-            ref={galleryInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-
           {image && (
             <button
               type="button"
@@ -126,23 +120,21 @@ function UploadCard() {
               </button>
             </div>
 
-            <label className="relative flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950">
-          <Camera className="h-5 w-5" />
-          Take Photo
+            {/* Take Photo Button triggering camera input ref */}
+            <button
+              type="button"
+              onClick={() => cameraInputRef.current?.click()}
+              className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950 transition-all hover:bg-lime-300"
+            >
+              <Camera className="h-5 w-5" />
+              Take Photo
+            </button>
 
-         <input
-         type="file"
-         accept="image/*"
-         capture="environment"
-         onChange={handleImageChange}
-         className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-         />
-         </label>
-
+            {/* Choose from Gallery Button triggering gallery input ref */}
             <button
               type="button"
               onClick={() => galleryInputRef.current?.click()}
-              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
+              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400 transition-all hover:bg-white/5"
             >
               <Images className="h-5 w-5" />
               Choose from Gallery
@@ -155,6 +147,24 @@ function UploadCard() {
             >
               Cancel
             </button>
+
+            {/* Hidden inputs kept safe outside UI flow */}
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+
+            <input
+              ref={galleryInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
           </div>
         </div>
       )}
