@@ -1,21 +1,26 @@
-import { ImagePlus } from "lucide-react";
-import { useState } from "react";
+import { ImagePlus, Camera, Images, X } from "lucide-react";
+import { useRef, useState } from "react";
 import { analyzemeal } from "../services/analyzeservice";
 import { useNavigate } from "react-router-dom";
 
 function UploadCard() {
   const navigate = useNavigate();
 
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
+
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showImageOptions, setShowImageOptions] = useState(false);
 
   const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
+    const selectedImage = e.target.files?.[0];
 
     if (selectedImage) {
       setImage(selectedImage);
       setError("");
+      setShowImageOptions(false);
     }
   };
 
@@ -72,33 +77,30 @@ function UploadCard() {
             </div>
           )}
 
-          <label className="mt-8 cursor-pointer rounded-xl bg-lime-400 px-8 py-3 font-semibold text-slate-900 transition-all hover:scale-105 hover:bg-lime-300">
+          <button
+            type="button"
+            onClick={() => setShowImageOptions(true)}
+            className="mt-8 cursor-pointer rounded-xl bg-lime-400 px-8 py-3 font-semibold text-slate-900 transition-all hover:scale-105 hover:bg-lime-300"
+          >
             {image ? "Change Image" : "Choose Image"}
+          </button>
 
-            <label>
-                📷 Take Photo
-                <input 
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange = {handleImageChange}
-                className= 'hidden'
-                />
-            </label>
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleImageChange}
+            className="hidden"
+          />
 
-            <label>
-                🖼️ Gallery
-                <input 
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange = {handleImageChange}
-                className= 'hidden'
-                />
-            </label>
-
-            
-          </label>
+          <input
+            ref={galleryInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
 
           {image && (
             <button
@@ -112,12 +114,56 @@ function UploadCard() {
           )}
 
           {error && (
-            <p className="mt-4 text-center text-sm text-red-400">
-              {error}
-            </p>
+            <p className="mt-4 text-center text-sm text-red-400">{error}</p>
           )}
         </div>
       </div>
+
+      {showImageOptions && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 px-4 pb-6 sm:items-center">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-slate-900 p-5 shadow-2xl">
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">
+                Choose Image Source
+              </h3>
+
+              <button
+                type="button"
+                onClick={() => setShowImageOptions(false)}
+                className="rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => cameraInputRef.current?.click()}
+              className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950"
+            >
+              <Camera className="h-5 w-5" />
+              Take Photo
+            </button>
+
+            <button
+              type="button"
+              onClick={() => galleryInputRef.current?.click()}
+              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
+            >
+              <Images className="h-5 w-5" />
+              Choose from Gallery
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowImageOptions(false)}
+              className="mt-3 w-full rounded-xl px-4 py-3 font-semibold text-slate-400 hover:bg-white/5"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
