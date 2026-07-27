@@ -7,7 +7,6 @@ function UploadCard() {
   const navigate = useNavigate();
 
   const galleryInputRef = useRef(null);
-  const cameraInputRef = useRef(null);
 
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +20,6 @@ function UploadCard() {
       setImage(selectedImage);
       setError("");
     }
-    // Always close modal immediately upon file selection attempt
     setShowImageOptions(false);
   };
 
@@ -120,17 +118,19 @@ function UploadCard() {
               </button>
             </div>
 
-            {/* Take Photo Button triggering camera input ref */}
-            <button
-              type="button"
-              onClick={() => cameraInputRef.current?.click()}
-              className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950 transition-all hover:bg-lime-300"
-            >
+            {/* Native Label Wrapper for Camera - Bypasses mobile ref lifecycle issues */}
+            <label className="flex w-full cursor-pointer items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950 transition-all hover:bg-lime-300">
               <Camera className="h-5 w-5" />
               Take Photo
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
 
-            {/* Choose from Gallery Button triggering gallery input ref */}
             <button
               type="button"
               onClick={() => galleryInputRef.current?.click()}
@@ -140,24 +140,6 @@ function UploadCard() {
               Choose from Gallery
             </button>
 
-            <button
-              type="button"
-              onClick={() => setShowImageOptions(false)}
-              className="mt-3 w-full rounded-xl px-4 py-3 font-semibold text-slate-400 hover:bg-white/5"
-            >
-              Cancel
-            </button>
-
-            {/* Hidden inputs kept safe outside UI flow */}
-            <input
-              ref={cameraInputRef}
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-
             <input
               ref={galleryInputRef}
               type="file"
@@ -165,6 +147,14 @@ function UploadCard() {
               onChange={handleImageChange}
               className="hidden"
             />
+
+            <button
+              type="button"
+              onClick={() => setShowImageOptions(false)}
+              className="mt-3 w-full rounded-xl px-4 py-3 font-semibold text-slate-400 hover:bg-white/5"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
