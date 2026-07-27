@@ -75,12 +75,29 @@ function UploadCard() {
           <label className="mt-8 cursor-pointer rounded-xl bg-lime-400 px-8 py-3 font-semibold text-slate-900 transition-all hover:scale-105 hover:bg-lime-300">
             {image ? "Change Image" : "Choose Image"}
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
+            <label>
+                📷 Take Photo
+                <input 
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange = {handleImageChange}
+                className= 'hidden'
+                />
+            </label>
+
+            <label>
+                🖼️ Gallery
+                <input 
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange = {handleImageChange}
+                className= 'hidden'
+                />
+            </label>
+
+            
           </label>
 
           {image && (
