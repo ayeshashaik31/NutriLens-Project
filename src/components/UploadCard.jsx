@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 function UploadCard() {
   const navigate = useNavigate();
 
-  const cameraInputRef = useRef(null);
   const galleryInputRef = useRef(null);
 
   const [image, setImage] = useState(null);
@@ -86,15 +85,6 @@ function UploadCard() {
           </button>
 
           <input
-            ref={cameraInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-
-          <input
             ref={galleryInputRef}
             type="file"
             accept="image/*"
@@ -136,36 +126,27 @@ function UploadCard() {
               </button>
             </div>
 
+            <label className="relative flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950">
+          <Camera className="h-5 w-5" />
+          Take Photo
+
+         <input
+         type="file"
+         accept="image/*"
+         capture="environment"
+         onChange={handleImageChange}
+         className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+         />
+         </label>
+
             <button
-            type="button"
-            onClick={() => {
-            setShowImageOptions(false);
-
-            setTimeout(() => {
-            cameraInputRef.current?.click();
-           }, 100);
-           }}
-           className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950"
-           >
-           <Camera className="h-5 w-5" />
-           Take Photo
-           </button>
-
-          <button
-          type="button"
-          onClick={() => {
-          setShowImageOptions(false);
-
-         setTimeout(() => {
-         galleryInputRef.current?.click();
-        }, 100);
-        }}
-        className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
-        >
-        <Images className="h-5 w-5" />
-        Choose from Gallery
-       </button>  
-              
+              type="button"
+              onClick={() => galleryInputRef.current?.click()}
+              className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400"
+            >
+              <Images className="h-5 w-5" />
+              Choose from Gallery
+            </button>
 
             <button
               type="button"
