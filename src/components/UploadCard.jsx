@@ -33,13 +33,17 @@ function UploadCard() {
   const openCamera = () => {
     setShowImageOptions(false);
     resetInput(cameraInputRef);
-    cameraInputRef.current?.click();
+    setTimeout(() => {
+      cameraInputRef.current?.click();
+    }, 250);
   };
 
   const openGallery = () => {
     setShowImageOptions(false);
     resetInput(galleryInputRef);
-    galleryInputRef.current?.click();
+    setTimeout(() => {
+      galleryInputRef.current?.click();
+    }, 250);
   };
 
   const handleAnalyze = async () => {
