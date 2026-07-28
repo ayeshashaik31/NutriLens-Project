@@ -14,6 +14,12 @@ function UploadCard() {
   const [error, setError] = useState("");
   const [showImageOptions, setShowImageOptions] = useState(false);
 
+  const resetInput = (inputRef) => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   const handleImageChange = (e) => {
     const selectedImage = e.target.files?.[0];
 
@@ -22,6 +28,18 @@ function UploadCard() {
       setError("");
     }
     setShowImageOptions(false);
+  };
+
+  const openCamera = () => {
+    setShowImageOptions(false);
+    resetInput(cameraInputRef);
+    cameraInputRef.current?.click();
+  };
+
+  const openGallery = () => {
+    setShowImageOptions(false);
+    resetInput(galleryInputRef);
+    galleryInputRef.current?.click();
   };
 
   const handleAnalyze = async () => {
@@ -144,25 +162,18 @@ function UploadCard() {
               </button>
             </div>
 
-            {/* Native Label wrapping the file input forces mobile OS to trigger the camera directly */}
-            <label className="flex w-full cursor-pointer items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950 transition-all hover:bg-lime-300">
+            <button
+              type="button"
+              onClick={openCamera}
+              className="flex w-full items-center gap-3 rounded-xl bg-lime-400 px-4 py-3 font-semibold text-slate-950 transition-all hover:bg-lime-300"
+            >
               <Camera className="h-5 w-5" />
               Take Photo
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </label>
+            </button>
 
             <button
               type="button"
-              onClick={() => {
-                setShowImageOptions(false);
-                galleryInputRef.current?.click();
-              }}
+              onClick={openGallery}
               className="mt-3 flex w-full items-center gap-3 rounded-xl border border-lime-400 px-4 py-3 font-semibold text-lime-400 transition-all hover:bg-white/5"
             >
               <Images className="h-5 w-5" />
